@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 export async function handler() {
-  const databaseId = "YOUR_DATABASE_ID";  // Replace with your Notion database ID
+  const databaseId = "2a712bc9f51280ff8d61f0c569a3c0df";  // Replace with your Notion database ID
   const notionToken = process.env.NOTION_TOKEN;
 
   const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
