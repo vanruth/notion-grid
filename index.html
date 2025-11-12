@@ -1,1 +1,44 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Notion Instagram Grid</title>
+  <style>
+    body { font-family: sans-serif; background:#f8f8f8; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
+    h2 { margin-bottom:16px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; width:90%; max-width:900px; }
+    .card { position:relative; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+    .card img { width:100%; height:160px; object-fit:cover; }
+    .card-overlay { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.6); color:white; font-size:0.85rem; padding:6px 8px; display:flex; flex-direction:column; }
+    .card-overlay span:first-child { font-weight:600; }
+  </style>
+</head>
+<body>
+  <h2>Live Notion Instagram-Style Grid</h2>
+  <div class="grid" id="notionGrid"></div>
+  <script>
+    async function fetchGrid() {
+      const res = await fetch('/.netlify/functions/fetchNotion');
+      const data = await res.json();
+      const grid = document.getElementById('notionGrid');
+      grid.innerHTML = '';
+      data.forEach(item => {
+        if (!item.attachment) return;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.attachment}" alt="${item.name}" />
+          <div class="card-overlay">
+            <span>${item.name}</span>
+            <span>${item.publishDate}</span>
+            <span>${item.status}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    fetchGrid();
+  </script>
+</body>
+</html>
